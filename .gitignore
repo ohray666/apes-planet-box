@@ -3,3 +3,13 @@
 .classpath
 .project
 .iml
+
+node_modules
+Thumbs.db
+logs/
+lib/
+target/
+database/
+eclipse/
+static/dist/
+tmp/
