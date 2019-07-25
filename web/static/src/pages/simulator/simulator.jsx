@@ -46,6 +46,7 @@ export default function Simulator() {
           <div className="simulator-car" />
         </div>
         <div className="simulator-card">
+          1234567
           <SimulatorMap />
         </div>
         <div className="simulator-card">

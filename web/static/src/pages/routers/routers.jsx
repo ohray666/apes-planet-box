@@ -9,15 +9,8 @@ class Routers extends React.Component {
   render() {
     return (
       <Router>
-        <nav className="nav">
-          <ul>
-            <li>
-              <Link to="/simulator">Simulator</Link>
-            </li>
-          </ul>
-        </nav>
         <Switch>
-          <Route path="/simulator/" component={Simulator} />
+          <Route path="*" component={Simulator} />
           <Route component={NotFound} />
         </Switch>
       </Router>

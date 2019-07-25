@@ -11,7 +11,6 @@ import zh_CN from "../lang/zh_CN";
 import en_US from "../lang/en_US";
 
 import thunk from "redux-thunk";
-import todos from "./pages/todo/todos.reducer";
 
 import Routers from "./pages/routers/routers.jsx";
 
@@ -23,8 +22,7 @@ const INITIAL = {};
 
 const store = createStore(
   combineReducers({
-    INITIAL,
-    todos
+    INITIAL
   }),
   applyMiddleware(thunk)
 );
