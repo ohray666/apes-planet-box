@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/Application.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/cache/MapCache.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/controller/MapV1Controller.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/controller/PlanetBoxController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/core/MapMatching.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/core/util/TimeStep.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/gpx/Gpx.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/gpx/Trk.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/gpx/Trkpt.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/gpx/Trkseg.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/services/MatchingService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/java/com/apes/planet/box/util/TimeUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/test/resources/test1.gpx">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/planetbox-service/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
