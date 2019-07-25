@@ -11,5 +11,6 @@ lib/
 target/
 database/
 eclipse/
-static/dist/
+dist/
+static/dll/
 tmp/

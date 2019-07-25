@@ -1,0 +1,9 @@
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  // 升级到Babel 7的经验
+  // https://segmentfault.com/a/1190000016541105
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/plugin-proposal-class-properties"
+  ]
+}
