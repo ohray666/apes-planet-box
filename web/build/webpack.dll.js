@@ -4,7 +4,18 @@ const webpack = require("webpack");
 module.exports = {
   mode: "production",
   entry: {
-    vendors: ["react", "react-dom"]
+    vendors: [
+      "axios",
+      "prop-types",
+      "react",
+      "react-dom",
+      "react-intl",
+      "react-leaflet",
+      "react-redux",
+      "react-router-dom",
+      "redux",
+      "redux-thunk"
+    ]
   },
   output: {
     filename: "[name].dll.js",
