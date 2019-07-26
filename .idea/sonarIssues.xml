@@ -8,6 +8,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../ericsson/fms-bff/src/main/java/com/ericsson/fms/bff/controller/vehicle/VehicleController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ericsson/fms-bff/src/main/resources/application.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ericsson/fms-report/src/main/java/com/ericsson/fms/service/core/common/ReportConstants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ericsson/fms-report/src/main/java/com/ericsson/fms/service/core/service/impl/restful/reports/ReportDashboardService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/planet-box-service/pom.xml">
           <value>
             <set />
@@ -78,7 +98,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/test/resources/test11.gpx">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/planetbox-service/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../graphhopper/client-hc/src/main/java/com/graphhopper/api/GraphHopperWeb.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../telematics/telematics-simulator/service/telematics-simulator-service/src/main/conf/innerconf/json/S73_M1_V2.0.0_VALRemoteControlRequest.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../telematics/telematics-simulator/service/telematics-simulator-service/src/main/conf/innerconf/json/S73_M2_V2.0.0_VALRemoteControlResponse.json">
           <value>
             <set />
           </value>

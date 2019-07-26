@@ -54,4 +54,12 @@ public class PlanetBoxController {
         return match;
     }
 
+    @RequestMapping(value = "/route/{vin}", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public JSONObject route(HttpServletRequest request, @PathVariable String vin, @RequestBody JSONObject payload) throws IOException {
+        LOGGER.info("Into PlanetBoxController match method, vin{}, vehicleData:{}", vin, payload);
+        JSONObject route = matchingService.getRoute(payload);
+        return route;
+    }
+
 }

@@ -14,6 +14,7 @@ import com.apes.planet.box.gpx.Trkseg;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.PathWrapper;
@@ -22,6 +23,7 @@ import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.util.HintsMap;
 import com.graphhopper.util.*;
 import com.graphhopper.util.gpx.GpxFromInstructions;
+import com.graphhopper.util.shapes.GHPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.PublicKey;
+import java.text.NumberFormat;
 import java.util.*;
+
+import static com.graphhopper.http.WebHelper.encodePolyline;
+import static com.graphhopper.util.Parameters.Routing.CALC_POINTS;
+import static com.graphhopper.util.Parameters.Routing.INSTRUCTIONS;
+import static com.graphhopper.util.Parameters.Routing.WAY_POINT_MAX_DISTANCE;
 
 @Service
 public class MatchingService {
@@ -352,6 +360,68 @@ public class MatchingService {
         }
         json.put("trkseg", trksegJsonArray);
         MapCache.put(key, json);
+    }
+
+    public JSONObject getRoute(JSONObject payload) {
+        StopWatch sw = new StopWatch().start();
+        JSONObject result = new JSONObject();
+        GHRequest request;
+        boolean calcPoints = true;
+
+        List<GHPoint> requestPoints = new ArrayList<>();
+
+        GHPoint startPoint = GHPoint.fromString(payload.getString("startPoint"));
+        GHPoint endPoint = GHPoint.fromString(payload.getString("endPoint"));
+        requestPoints.add(startPoint);
+        requestPoints.add(endPoint);
+        request = new GHRequest(requestPoints);
+        request.setVehicle(payload.getString("vehicle")).
+                setWeighting(payload.getString("weighting")).
+                setAlgorithm(payload.getString("algoStr")).
+                setLocale(payload.getString("locale")).
+//                setPointHints(pointHints).
+//                setSnapPreventions(snapPreventions).
+//                setPathDetails(pathDetails).
+                getHints().
+                put(CALC_POINTS, true).
+                put(INSTRUCTIONS, true).
+                put(WAY_POINT_MAX_DISTANCE, payload.getIntValue("minPathPrecision"));
+
+        GHResponse ghResponse = graphHopper.route(request);
+        float took = sw.stop().getSeconds();
+        result.put("hints", request.getHints().toMap());
+        result.put("took", took);
+        JSONArray paths = new JSONArray();
+        for (PathWrapper ar : ghResponse.getAll()) {
+            JSONObject jsonPath = new JSONObject();
+            jsonPath.put("distance", Helper.round(ar.getDistance(), 3));
+            jsonPath.put("weight", Helper.round6(ar.getRouteWeight()));
+            jsonPath.put("time", ar.getTime());
+            jsonPath.put("transfers", ar.getNumChanges());
+            if (!ar.getDescription().isEmpty()) {
+                jsonPath.put("description", ar.getDescription());
+            }
+            if (calcPoints) {
+                jsonPath.put("points_encoded", true);
+//                if (ar.getPoints().getSize() >= 2) {
+//                    jsonPath.put("bbox", ar.calcBBox2D());
+//                }
+                jsonPath.put("points", WebHelper.encodePolyline(ar.getPoints(), false)) ;
+                jsonPath.put("instructions", ar.getInstructions());
+                jsonPath.put("legs", ar.getLegs());
+                jsonPath.put("details", ar.getPathDetails());
+                jsonPath.put("ascend", ar.getAscend());
+                jsonPath.put("descend", ar.getDescend());
+            }
+            jsonPath.put("snapped_waypoints", WebHelper.encodePolyline(ar.getPoints(), false));
+            if (ar.getFare() != null) {
+                jsonPath.put("fare", NumberFormat.getCurrencyInstance(Locale.ROOT).format(ar.getFare()));
+            }
+            paths.add(jsonPath);
+        }
+        result.put("paths", paths);
+//        graphHopper.route();
+        return result;
     }
 
 

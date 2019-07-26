@@ -3,6 +3,7 @@
 .classpath
 .project
 .iml
+.idea/
 
 node_modules
 Thumbs.db
