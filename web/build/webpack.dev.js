@@ -17,7 +17,7 @@ const devConfig = {
     contentBase: path.resolve(__dirname, "../static/dist"),
     compress: true,
     host: "localhost",
-    port: 8080,
+    port: 9000,
     // quiet: true,
     // 重要，关于热加载的细节 https://github.com/webpack/docs/wiki/webpack-dev-server#content-base
     hot: true,
@@ -30,10 +30,10 @@ const devConfig = {
   plugins: [
     // 插件
     new webpack.NamedModulesPlugin(), //用于启动HMR时可以显示模块的相对路径
-    new BundleAnalyzerPlugin({ analyzerPort: 8081, openAnalyzer: false }),
+    new BundleAnalyzerPlugin({ analyzerPort: 9001, openAnalyzer: false }),
     new webpack.DefinePlugin({
-      'process.env': {
-        VUEP_BASE_URL: '/'
+      "process.env": {
+        VUEP_BASE_URL: "/"
       }
     })
   ],

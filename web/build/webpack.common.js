@@ -45,7 +45,7 @@ const plugins = [
   /**
    * 打包后先清除dist文件，先于HtmlWebpackPlugin运行
    */
-  // new CleanWebpackPlugin(),
+  new CleanWebpackPlugin(),
   /**
    * webpack打包进度条
    * Elegant ProgressBar and Profiler for Webpack
@@ -99,14 +99,14 @@ const optimization = {
       // 公共代码打包分组配置
       vendors: {
         test: /[\\/]node_modules[\\/]/,
-        name: 'vendors'
+        name: "vendors"
       }
     }
-  },
+  }
 };
 
 const resolve = {
-  extensions: [".js", ".jsx", ".ts", "tsx", "json"],
+  extensions: [".js", ".jsx", ".ts", "tsx", "json"]
 };
 
 const performance = {
@@ -119,7 +119,7 @@ const commonConfig = {
   module: webpackModule,
   resolve,
   performance,
-  output,
+  output
 };
 
 module.exports = commonConfig;
