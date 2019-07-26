@@ -13,6 +13,8 @@ npm start // 启动项目
 
 ### 项目介绍
 
+project for Hackathon 2019 
+
 ### 功能实现
 
 - [x] Es6/7
