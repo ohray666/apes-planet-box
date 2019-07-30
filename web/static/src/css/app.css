@@ -211,8 +211,8 @@ h1 {
 }
 
 .simulator {
-  display: flex;
-  flex: 1;
+  /* display: flex;
+  flex: 1; */
   color: #fff;
   background: #333;
 }
@@ -220,6 +220,14 @@ h1 {
 .simulator-cont {
   display: flex;
   flex: 1;
+}
+
+.simulator-start {
+  display: block;
+  margin: 30px auto;
+  width: 280px;
+  text-align: center;
+  background: #73c700;
 }
 
 .simulator-card {

@@ -9,6 +9,7 @@ export default function SimulatorMap({ position }) {
       fadeAnimation={false}
       zoom={18}
       zoomControl={false}
+      scrollWheelZoom={false}
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
