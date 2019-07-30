@@ -5,8 +5,8 @@
 ```javascript
 git clone git@github.com:ohray666/apes-planet-box.git
 cd web
-cnpm i
-npm run build:dll
+npm config set registry https://arm.lmera.ericsson.se/artifactory/api/npm/proj-cv-npm
+npm install
 npm start // 启动项目
 ```
 

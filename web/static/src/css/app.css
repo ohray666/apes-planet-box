@@ -1,4 +1,7 @@
 @import "./leaflet.css";
+
+@import "../../../node_modules/eds-react/lib/assets/styles/themes/light.css";
+
 html {
   font-size: 16px;
 }
