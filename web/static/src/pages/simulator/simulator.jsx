@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { testPoint } from "./test";
-import SimulatorMap from "./map.jsx";
+import { testPoint } from "../../components/test.js";
+import Map from "../../components/map.jsx";
 
 console.log(testPoint);
 
@@ -63,7 +63,7 @@ export default function Simulator() {
           <div className="simulator-car" />
         </div>
         <div className="simulator-card">
-          <SimulatorMap position={position} />
+          <Map position={position} />
         </div>
         <div className="simulator-card">
           <ul className="simulator-log">{renderMsg()}</ul>
