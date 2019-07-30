@@ -1,5 +1,6 @@
 package com.apes.planet.box.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.apes.planet.box.cache.MapCache;
@@ -34,23 +35,24 @@ public class PlanetBoxController {
         return outputXml;
     }
 
-    @RequestMapping(value = "/match", method = RequestMethod.POST, consumes = "application/gpx+xml")
-    @ResponseBody
-    public JSONObject snapToRoad(HttpServletRequest request, @RequestBody String payload) throws IOException {
-        System.out.println(payload);
-        JSONObject match = matchingService.match(payload);
-        return match;
-    }
+//    @RequestMapping(value = "/match", method = RequestMethod.POST, consumes = "application/gpx+xml")
+//    @ResponseBody
+//    public JSONObject snapToRoad(HttpServletRequest request, @RequestBody String payload) throws IOException {
+//        System.out.println(payload);
+//        JSONObject match = matchingService.match(payload);
+//        return match;
+//    }
 
     @RequestMapping(value = "/pos-match/{vin}", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public JSONObject match(HttpServletRequest request, @PathVariable String vin, @RequestParam String type, @RequestBody JSONObject payload) throws IOException {
         LOGGER.info("Into PlanetBoxController match method, vin{}, type:{} vehicleData:{}", vin, type, payload);
+        JSONObject match = new JSONObject();
         if ("telemetry".equalsIgnoreCase(type)) {
             matchingService.updateCache(vin, payload);
         }
+        match = matchingService.match(vin, type, payload);
         System.out.println(payload);
-        JSONObject match = matchingService.match(vin, payload);
         return match;
     }
 
