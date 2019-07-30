@@ -1,8 +1,14 @@
 import React from "react";
 import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
 
 export default function SimulatorMap({ position }) {
-  console.log(position);
+  const myIcon = divIcon({
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    className: "icon-car",
+    html: `<span></span>`
+  });
   return (
     <LeafletMap
       center={position}
@@ -15,11 +21,7 @@ export default function SimulatorMap({ position }) {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      <Marker position={position} icon={myIcon} />
     </LeafletMap>
   );
 }
