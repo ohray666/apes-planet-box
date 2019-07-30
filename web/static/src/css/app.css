@@ -220,6 +220,7 @@ h1 {
 .simulator-cont {
   display: flex;
   flex: 1;
+  height: 600px;
 }
 
 .simulator-start {
@@ -248,7 +249,7 @@ h1 {
 }
 
 .simulator-log {
-  height: 650px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -272,7 +273,7 @@ h1 {
 }
 
 .leaflet-container {
-  height: 680px;
+  height: 100%;
 }
 
 .simulator-log {
