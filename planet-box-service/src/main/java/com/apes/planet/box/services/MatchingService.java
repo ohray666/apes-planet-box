@@ -334,6 +334,10 @@ public class MatchingService {
         return gpx;
     }
 
+    public void deleteCache(String key) {
+        MapCache.remove(key);
+    }
+
     public void updateCache(String key, JSONObject payload) {
         JSONObject json = (JSONObject) MapCache.get(key);
         if (json == null) {

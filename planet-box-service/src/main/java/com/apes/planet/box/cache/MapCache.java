@@ -20,4 +20,8 @@ public class MapCache {
         getCache().put(key, value);
     }
 
+    public static void remove(String key) {
+        getCache().remove(key);
+    }
+
 }

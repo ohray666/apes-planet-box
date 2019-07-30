@@ -54,6 +54,16 @@ public class PlanetBoxController {
         return match;
     }
 
+    @RequestMapping(value = "/init/{vin}", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject init(HttpServletRequest request, @PathVariable String vin) throws IOException {
+        LOGGER.info("into PlanetBoxController init method, vin{}, type:{} vehicleData:{}", vin);
+        JSONObject result = new JSONObject();
+        result.put("description", "init vin (" + vin + ")");
+        matchingService.deleteCache(vin);
+        return result;
+    }
+
     @RequestMapping(value = "/route/{vin}", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public JSONObject route(HttpServletRequest request, @PathVariable String vin, @RequestBody JSONObject payload) throws IOException {

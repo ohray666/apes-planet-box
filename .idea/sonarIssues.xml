@@ -93,6 +93,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/planet-box-service/src/main/resources/application.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/planet-box-service/src/test/resources/test1.gpx">
           <value>
             <set />
@@ -109,6 +114,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../graphhopper/client-hc/src/main/java/com/graphhopper/api/GraphHopperWeb.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../map-matching/matching-web/src/main/resources/assets/mapmatching-webapp/js/demo.js">
           <value>
             <set />
           </value>
