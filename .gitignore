@@ -3,7 +3,7 @@
 .classpath
 .project
 .iml
-.idea
+.idea/
 
 node_modules
 Thumbs.db
@@ -15,4 +15,4 @@ eclipse/
 dist/
 static/dll/
 tmp/
-**/graph-cache
+**/graph-cache/
