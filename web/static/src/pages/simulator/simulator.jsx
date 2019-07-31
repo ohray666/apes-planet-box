@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { testPoint } from "../../components/test.js";
-import SelectTrip from "../../components/selectTrip.jsx";
-import Map from "../../components/map.jsx";
-import Points from "./points.js";
+import { testPoint } from '../../components/test.js';
+import SelectTrip from '../../components/selectTrip.jsx';
+import Map from '../../components/map.jsx';
+import Points from './points.js';
 
 const pathStep = 0.00002;
 const testPointObj = new Points(testPoint, pathStep);
@@ -48,7 +48,7 @@ export default function Simulator() {
   function creatMsg() {
     setActionClass('action');
     setTimeout(() => {
-      setActionClass("");
+      setActionClass('');
     }, 40);
 
     const msgText = [msg[0] + 10];
@@ -82,7 +82,7 @@ export default function Simulator() {
           <div className="simulator-car" />
         </div>
         <div className="simulator-card">
-          <Map position={position} />
+          <Map center={position} currentPoint={position} />
         </div>
         <div className="simulator-card">
           <ul className="simulator-log">{renderMsg()}</ul>
@@ -90,8 +90,8 @@ export default function Simulator() {
       </section>
 
       <div className="simulator-play">
-        <div onClick={handPlay} className={play ? "stop" : "start"}>
-          {play ? "Stop" : "Start"}
+        <div onClick={handPlay} className={play ? 'stop' : 'start'}>
+          {play ? 'Stop' : 'Start'}
         </div>
       </div>
 
