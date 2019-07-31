@@ -72,7 +72,7 @@ public class MatchingService {
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
 //        matching.setMeasurementErrorSigma(Integer.parseInt((String)queryString.get("gps_accuracy")));
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
@@ -155,7 +155,7 @@ public class MatchingService {
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
 //        matching.setMeasurementErrorSigma(Integer.parseInt((String)queryString.get("gps_accuracy")));
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
@@ -221,7 +221,7 @@ public class MatchingService {
                 .build();
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
@@ -355,16 +355,9 @@ public class MatchingService {
             LOGGER.error("throw the received payload. ", e);
         }
 
-//        JSONArray trksegJsonArray = json.getJSONArray("trkseg");
-//        if (trksegJsonArray == null || trksegJsonArray.size() < 3) {
-//            return gpx;
-//        }
-//
-//
         Trkseg trkseg = new Trkseg();
         List<Trkpt> trkptList = new ArrayList<>();
-        SimpleDateFormat format = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             for (Map.Entry entry : positions.entrySet()) {
