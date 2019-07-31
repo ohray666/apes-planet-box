@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { testPoint } from "../../components/test.js";
-import Map from "../../components/map.jsx";
-
-console.log(testPoint);
+import { testPoint } from '../../components/test.js';
+import Map from '../../components/map.jsx';
 
 export default function Simulator() {
   const [start, setStart] = useState(false);
   const [random, setRandom] = useState();
   const [count, setCount] = useState(0);
-  const [position, setPosition] = useState(0, 0);
+  const [position, setPosition] = useState({ lat: 0, lon: 0 });
   const [msg, setMsg] = useState([0]);
-  const [actionClass, setActionClass] = useState("");
+  const [actionClass, setActionClass] = useState('');
 
   useEffect(() => {
     console.log(start);
@@ -28,13 +26,14 @@ export default function Simulator() {
   useEffect(() => {
     setCount(count + 1);
     creatMsg();
-    setPosition(testPoint[count % 200].point);
+    const point = testPoint[count % 200].point;
+    setPosition({ lat: Number(point.lat), lon: Number(point.lon) });
   }, [random]);
 
   function creatMsg() {
-    setActionClass("action");
+    setActionClass('action');
     setTimeout(() => {
-      setActionClass("");
+      setActionClass('');
     }, 400);
 
     const msgText = [msg[0] + 10];
@@ -44,7 +43,7 @@ export default function Simulator() {
   function renderMsg() {
     return msg.map((item, key) => {
       return (
-        <li className={key === 0 ? actionClass : ""} key={key}>
+        <li className={key === 0 ? actionClass : ''} key={key}>
           {item}
         </li>
       );
@@ -52,7 +51,6 @@ export default function Simulator() {
   }
 
   function handStart() {
-    console.log(start);
     setStart(!start);
   }
 
@@ -71,7 +69,7 @@ export default function Simulator() {
       </section>
 
       <div className="simulator-start" onClick={handStart}>
-        {start ? "Stop" : "Start"}
+        {start ? 'Stop' : 'Start'}
       </div>
     </div>
   );
