@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import { testPoint } from "../../components/test.js";
 import Map from "../../components/map.jsx";
+import Points from "./points.js";
 
-console.log(testPoint);
+const pathStep = 0.00001;
+const testPointObj = new Points(testPoint, pathStep);
+const points = testPointObj.get(testPoint);
+console.log(points);
 
 export default function Simulator() {
   const [start, setStart] = useState(false);
@@ -15,10 +19,11 @@ export default function Simulator() {
 
   useEffect(() => {
     console.log(start);
+
     if (start) {
       const startMove = setInterval(() => {
         setRandom(Math.random());
-      }, 1000);
+      }, 100);
       return () => {
         clearInterval(startMove);
       };
@@ -26,16 +31,20 @@ export default function Simulator() {
   }, [start]);
 
   useEffect(() => {
-    setCount(count + 1);
-    creatMsg();
-    setPosition(testPoint[count % 200].point);
+    if (points[count]) {
+      setCount(count + 1);
+      // creatMsg();
+      setPosition(points[count].point);
+    } else {
+      goback();
+    }
   }, [random]);
 
   function creatMsg() {
     setActionClass("action");
     setTimeout(() => {
       setActionClass("");
-    }, 400);
+    }, 40);
 
     const msgText = [msg[0] + 10];
     setMsg(msgText.concat(msg));
@@ -54,6 +63,11 @@ export default function Simulator() {
   function handStart() {
     console.log(start);
     setStart(!start);
+  }
+
+  function goback() {
+    setPosition(points[0].point);
+    handStart();
   }
 
   return (
