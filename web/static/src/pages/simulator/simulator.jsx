@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 import { testPoint } from "../../components/test.js";
+import SelectTrip from "../../components/selectTrip.jsx";
 import Map from "../../components/map.jsx";
 import Points from "./points.js";
 
-const pathStep = 0.00001;
+const pathStep = 0.00002;
 const testPointObj = new Points(testPoint, pathStep);
 const points = testPointObj.get(testPoint);
 console.log(points);
 
 export default function Simulator() {
-  const [start, setStart] = useState(false);
+  const [play, setPlay] = useState(false);
   const [random, setRandom] = useState();
   const [count, setCount] = useState(0);
   const [position, setPosition] = useState(0, 0);
@@ -18,9 +19,9 @@ export default function Simulator() {
   const [actionClass, setActionClass] = useState("");
 
   useEffect(() => {
-    console.log(start);
+    console.log(play);
 
-    if (start) {
+    if (play) {
       const startMove = setInterval(() => {
         setRandom(Math.random());
       }, 100);
@@ -28,7 +29,7 @@ export default function Simulator() {
         clearInterval(startMove);
       };
     }
-  }, [start]);
+  }, [play]);
 
   useEffect(() => {
     if (points[count]) {
@@ -60,14 +61,14 @@ export default function Simulator() {
     });
   }
 
-  function handStart() {
-    console.log(start);
-    setStart(!start);
+  function handPlay() {
+    console.log(play);
+    setPlay(!play);
   }
 
   function goback() {
     setPosition(points[0].point);
-    handStart();
+    handPlay();
   }
 
   return (
@@ -84,9 +85,13 @@ export default function Simulator() {
         </div>
       </section>
 
-      <div className="simulator-start" onClick={handStart}>
-        {start ? "Stop" : "Start"}
+      <div className="simulator-play">
+        <div onClick={handPlay} className={play ? "stop" : "start"}>
+          {play ? "Stop" : "Start"}
+        </div>
       </div>
+
+      <SelectTrip />
     </div>
   );
 }

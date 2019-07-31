@@ -12,7 +12,8 @@ export default function SimulatorMap({ position }) {
   return (
     <LeafletMap
       center={position}
-      fadeAnimation={false}
+      animation={true}
+      duration={1000}
       zoom={18}
       zoomControl={false}
       scrollWheelZoom={false}
@@ -21,7 +22,12 @@ export default function SimulatorMap({ position }) {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position} icon={myIcon} />
+      <Marker
+        animate={true}
+        duration={1000}
+        position={position}
+        icon={myIcon}
+      />
     </LeafletMap>
   );
 }
