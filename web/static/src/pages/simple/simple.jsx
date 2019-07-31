@@ -8,8 +8,7 @@ export default function Simulator() {
   const [position, setPosition] = useState({ lat: 0, lon: 0 });
 
   useEffect(() => {
-    const point = testPoint[0].point;
-    setPosition({ lat: Number(point.lat), lon: Number(point.lon) });
+    setPosition(testPoint[0].point);
   });
 
   return (

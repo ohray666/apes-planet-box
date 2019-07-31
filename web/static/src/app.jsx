@@ -11,6 +11,7 @@ import zh_CN from "../lang/zh_CN";
 import en_US from "../lang/en_US";
 
 import thunk from "redux-thunk";
+import { default as simulator } from "./pages/simulator/simulator.reducer.js";
 
 import Routers from "./pages/routers/routers.jsx";
 
@@ -18,11 +19,12 @@ import "./css/app.css";
 
 addLocaleData([...en, ...zh]);
 
-const INITIAL = {};
+const INITIAL = { car: "123321" };
 
 const store = createStore(
   combineReducers({
-    INITIAL
+    INITIAL,
+    simulator
   }),
   applyMiddleware(thunk)
 );

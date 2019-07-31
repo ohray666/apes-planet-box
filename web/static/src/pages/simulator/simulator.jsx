@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-import { testPoint } from '../../components/test.js';
-import Map from '../../components/map.jsx';
+import { testPoint } from "../../components/test.js";
+import SelectTrip from "../../components/selectTrip.jsx";
+import Map from "../../components/map.jsx";
+import Points from "./points.js";
+
+const pathStep = 0.00002;
+const testPointObj = new Points(testPoint, pathStep);
+const points = testPointObj.get(testPoint);
+console.log(points);
 
 export default function Simulator() {
-  const [start, setStart] = useState(false);
+  const [play, setPlay] = useState(false);
   const [random, setRandom] = useState();
   const [count, setCount] = useState(0);
   const [position, setPosition] = useState({ lat: 0, lon: 0 });
@@ -12,29 +19,37 @@ export default function Simulator() {
   const [actionClass, setActionClass] = useState('');
 
   useEffect(() => {
-    console.log(start);
-    if (start) {
+    console.log(play);
+
+    if (play) {
       const startMove = setInterval(() => {
         setRandom(Math.random());
-      }, 1000);
+      }, 100);
       return () => {
         clearInterval(startMove);
       };
     }
-  }, [start]);
+  }, [play]);
 
   useEffect(() => {
-    setCount(count + 1);
-    creatMsg();
-    const point = testPoint[count % 200].point;
-    setPosition({ lat: Number(point.lat), lon: Number(point.lon) });
+    // setCount(count + 1);
+    // creatMsg();
+    // const point = testPoint[count % 200].point;
+    // setPosition({ lat: Number(point.lat), lon: Number(point.lon) });
+    if (points[count]) {
+      setCount(count + 1);
+      // creatMsg();
+      setPosition(points[count].point);
+    } else {
+      goback();
+    }
   }, [random]);
 
   function creatMsg() {
     setActionClass('action');
     setTimeout(() => {
-      setActionClass('');
-    }, 400);
+      setActionClass("");
+    }, 40);
 
     const msgText = [msg[0] + 10];
     setMsg(msgText.concat(msg));
@@ -50,8 +65,14 @@ export default function Simulator() {
     });
   }
 
-  function handStart() {
-    setStart(!start);
+  function handPlay() {
+    console.log(play);
+    setPlay(!play);
+  }
+
+  function goback() {
+    setPosition(points[0].point);
+    handPlay();
   }
 
   return (
@@ -68,9 +89,13 @@ export default function Simulator() {
         </div>
       </section>
 
-      <div className="simulator-start" onClick={handStart}>
-        {start ? 'Stop' : 'Start'}
+      <div className="simulator-play">
+        <div onClick={handPlay} className={play ? "stop" : "start"}>
+          {play ? "Stop" : "Start"}
+        </div>
       </div>
+
+      <SelectTrip />
     </div>
   );
 }

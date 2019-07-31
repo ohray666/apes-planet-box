@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.PublicKey;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.graphhopper.http.WebHelper.encodePolyline;
@@ -71,7 +72,7 @@ public class MatchingService {
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
 //        matching.setMeasurementErrorSigma(Integer.parseInt((String)queryString.get("gps_accuracy")));
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
@@ -154,7 +155,7 @@ public class MatchingService {
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
 //        matching.setMeasurementErrorSigma(Integer.parseInt((String)queryString.get("gps_accuracy")));
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
@@ -206,7 +207,7 @@ public class MatchingService {
     }
 
 
-    public JSONObject match(String vin, JSONObject jsonObject) {
+    public JSONObject match(String vin, String type, JSONObject jsonObject) {
         boolean instructions = true, calcPoints = true, enableElevation = false, pointsEncoded = true, enableTraversalKeys = false;
         List<String> pathDetails = new ArrayList<>();
         int maxVisitedNodes = 3000;
@@ -220,11 +221,16 @@ public class MatchingService {
                 .build();
 
         MapMatching mapMatching = new MapMatching(graphHopper, opts);
-        mapMatching.setMeasurementErrorSigma(10);
+        mapMatching.setMeasurementErrorSigma(20);
         XmlMapper xmlMapper = new XmlMapper();
         Gpx gpx = new Gpx();
         try {
-            gpx = getTrkseg(vin, jsonObject);
+            if ("telemetry".equalsIgnoreCase(type)) {
+                gpx = getTrksegFromCache(vin, jsonObject);
+            } else if ("poi".equalsIgnoreCase(type)) {
+                gpx = getTrksegFromPoi(vin, jsonObject);
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -289,7 +295,7 @@ public class MatchingService {
         return json;
     }
 
-    public Gpx getTrkseg(String vin, JSONObject payload) {
+    public Gpx getTrksegFromCache(String vin, JSONObject payload) {
         Gpx gpx = new Gpx();
         JSONObject json = (JSONObject) MapCache.get(vin);
         if (json == null) {
@@ -323,13 +329,66 @@ public class MatchingService {
 
         Trk trk = new Trk();
         trk.setTrkseg(trksegList);
-        trk.setName("GraphHopper");
+        trk.setName("Apes-Planet-Box");
 
         List<Trk> trkList = new ArrayList<>();
         trkList.add(trk);
 
         gpx.setTrk(trkList);
 
+
+        return gpx;
+    }
+
+    public Gpx getTrksegFromPoi(String vin, JSONObject payload) {
+        Gpx gpx = new Gpx();
+        if (payload == null) {
+            return gpx;
+        }
+
+        JSONObject positions = null;
+        try {
+            positions = payload.getJSONObject("VehicleSpecification")
+                    .getJSONObject("Basic")
+                    .getJSONObject("position");
+        } catch (Exception e) {
+            LOGGER.error("throw the received payload. ", e);
+        }
+
+        Trkseg trkseg = new Trkseg();
+        List<Trkpt> trkptList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            for (Map.Entry entry : positions.entrySet()) {
+                JSONObject pos = (JSONObject) entry.getValue();
+                String altitude = pos.getString("altitude");
+                String latitude = pos.getString("latitude");
+                String longitude = pos.getString("longitude");
+                String timestamp = entry.getKey().toString();
+                Double ele = Double.parseDouble(altitude);
+                Double lat = Double.parseDouble(latitude);
+                Double lon = Double.parseDouble(longitude);
+                Date date = format.parse(timestamp);
+                Trkpt trkpt = new Trkpt(ele, lat, lon, date);
+                trkptList.add(trkpt);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        trkseg.setTrkpt(trkptList);
+        List<Trkseg> trksegList = new ArrayList<>();
+        trksegList.add(trkseg);
+
+        Trk trk = new Trk();
+        trk.setTrkseg(trksegList);
+        trk.setName("Apes-Planet-Box");
+
+        List<Trk> trkList = new ArrayList<>();
+        trkList.add(trk);
+
+        gpx.setTrk(trkList);
 
         return gpx;
     }
