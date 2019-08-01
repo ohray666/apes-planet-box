@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Api(tags = "map-api-v1")
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/v1")
 public class PlanetBoxController {

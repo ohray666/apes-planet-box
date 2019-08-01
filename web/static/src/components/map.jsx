@@ -42,7 +42,7 @@ export default function SimulatorMap({
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://osmmaps.ecf.cloud/osm_tiles/{z}/{x}/{y}.png?access_token=b3NtOjFxMnczZTRy7"
+        url="https://osmmaps.ecf.cloud/osm_tiles//11/1340/875.png?access_token=b3NtOjFxMnczZTRy7"
       />
       <CurrentMarker point={currentPoint} />
       <TripStartMarker point={startPoint} />
@@ -79,7 +79,7 @@ function CurrentMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(myIcon)}
-      key={'current'}
+      key={"current"}
     >
       <Popup>
         <div>Current point</div>
@@ -95,7 +95,7 @@ function TripStartMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(startIconStyle)}
-      key={'start'}
+      key={"start"}
     >
       <Popup>
         <div>Trip start point</div>
@@ -111,7 +111,7 @@ function TripEndMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(endIconStyle)}
-      key={'end'}
+      key={"end"}
     >
       <Popup>
         <div>Trip end point</div>
@@ -129,7 +129,7 @@ function TripPath({ path }) {
         repeat: true,
         offset: 6,
         style: {
-          color: 'red',
+          color: "red",
           opacity: 0.4
         }
       }}

@@ -16,7 +16,7 @@ const devConfig = {
   devServer: {
     contentBase: path.resolve(__dirname, "../static/dist"),
     compress: true,
-    host: "localhost",
+    host: "0.0.0.0",
     port: 9000,
     // quiet: true,
     // 重要，关于热加载的细节 https://github.com/webpack/docs/wiki/webpack-dev-server#content-base
