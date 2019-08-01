@@ -42,7 +42,7 @@ export default function SimulatorMap({
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url="https://osmmaps.ecf.cloud/osm_tiles//11/1340/875.png?access_token=b3NtOjFxMnczZTRy7"
       />
       <CurrentMarker point={currentPoint} />
       <TripStartMarker point={startPoint} />
