@@ -43,13 +43,13 @@ export default function SimulatorMap({
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://osmmaps.ecf.cloud/osm_tiles//11/1340/875.png?access_token=b3NtOjFxMnczZTRy7"
+        url="https://osmmaps.ecf.cloud/osm_tiles//{z}/{x}/{y}.png?access_token=b3NtOjFxMnczZTRy7"
       />
       <CurrentMarker point={currentPoint} />
       <TripStartMarker point={startPoint} />
       <TripEndMarker point={endPoint} />
       <TripPath path={originalTrip} color={'red'} />
-      <TripPath path={optimizedTrip} color={'blue'} />
+      <TripPath path={optimizedTrip} color={'green'} />
     </LeafletMap>
   );
 
