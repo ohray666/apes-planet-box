@@ -290,6 +290,7 @@ h1 {
 }
 
 .simulator-log {
+  font-size: 30px !important;
   margin-bottom: 30px;
   height: 500px;
   overflow: hidden;
