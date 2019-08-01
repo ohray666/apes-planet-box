@@ -4,21 +4,18 @@ import axios from "axios";
 import { CONF } from "../../../../config/config.js";
 import { decode } from "../../utils/decode";
 import Map from "../../components/map.jsx";
-import reducer from "./simulator.reducer";
 
 import Points from "./points";
 import { TRIP_ONE } from "../../components/trip_path_20190713154335.js";
 import { TRIP_TWO } from "../../components/trip_path_20190714180533.js";
 import { TRIP_THREE } from "../../components/trip_path_20190729201805";
-import { POST } from "./post.js";
 
 export default function Simulator() {
-  const [redux, dispatch] = useReducer(reducer, {});
-
   const [play, setPlay] = useState(false);
   const [random, setRandom] = useState();
   const [count, setCount] = useState(0);
-  const [position, setPosition] = useState([0, 0]);
+  const [localPoints, setLocalPoints] = useState();
+  const [localPosition, setLocalPosition] = useState([0, 0]);
   const [serversPoints, setServersPoints] = useState();
   const [serversPosition, setServersPosition] = useState([0, 0]);
   const [msg, setMsg] = useState([0]);
@@ -43,16 +40,16 @@ export default function Simulator() {
   }, [play]);
 
   useEffect(() => {
-    if (redux && redux.localPoint && redux.localPoint.length < count) {
+    if (localPoints && localPoints.length < count) {
       setPlay(!play);
-    } else if (redux && redux.localPoint && redux.localPoint[count + 1]) {
+    } else if (localPoints && localPoints[count + 1]) {
       setCount(count + 1);
     }
   }, [random]);
 
   useEffect(() => {
-    if (redux && redux.localPoint && redux.localPoint[count]) {
-      setPosition(redux.localPoint[count]);
+    if (localPoints && localPoints[count]) {
+      setLocalPosition(localPoints[count]);
       setServersPosition(serversPoints[count]);
     }
   }, [count]);
@@ -60,24 +57,20 @@ export default function Simulator() {
   function getAPIInit() {
     axios.get(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_INIT}`);
   }
-  // function sendLocalPoint(point) {
-  //   const postData = POST;
-  //   postData.body.serviceData.telemetry[0].position.latitude = point[0];
-  //   postData.body.serviceData.telemetry[0].position.longitude = point[1];
-  //   axios
-  //     .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
-  //     .then(res => {
-  //       const data = res.data.paths[0].points;
-  //       dispatch({ type: "SERVERS_POINT", data });
-  //     });
-  // }
 
   function getServersPoint(localPoint) {
     axios
       .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_TRIP}`, localPoint)
       .then(res => {
         if (res.data && res.data.paths && res.data.paths.length > 0) {
+          const instructions = res.data.paths[0].instructions
+            .slice(1, -1)
+            .match(/[^\(\)]+(?=\))/g);
+          // [(0, 龙口中路, 161.58377057248714, 11632), (2,, 99.86226513671605, 11981), (4,, 0.0, 0)];
           const decodePoints = decode(res.data.paths[0].points, false);
+          // decodePoints.map((item, key) => {
+          //   return { ...item, instruction: instruction[key] };
+          // });
           const pathStep = 0.00002;
           const pointServersObj = new Points(decodePoints, pathStep);
           const points = pointServersObj.get(decodePoints);
@@ -110,6 +103,7 @@ export default function Simulator() {
   }
 
   function handPlay() {
+    getAPIInit();
     goback();
     setPlay(!play);
   }
@@ -136,40 +130,33 @@ export default function Simulator() {
     const pointObj = new Points(positionValues, pathStep);
     const points = pointObj.get(positionValues);
 
-    dispatch({ type: "LOCAL_POINT", data: points });
+    setLocalPoints(points);
   }
-
-  // if (redux && redux.serversPoint) {
-  //   console.log(decode(redux.serversPoint, false));
-  // }
 
   return (
     <div className="pages home simulator">
       <section className="simulator-cont">
         <div className="simulator-card">
-          <Map center={position} currentPoint={position} />
+          <Map center={localPosition} currentPoint={localPosition} />
         </div>
         <div className="simulator-card">
           <Map center={serversPosition} currentPoint={serversPosition} />
         </div>
         <div className="simulator-card">
           <ul className="simulator-log">{renderMsg()}</ul>
+          <div className="simulator-play">
+            <select className="simulator-select" onChange={handTrip}>
+              <option value="0">Route one</option>
+              <option value="1">Route two</option>
+              <option value="2">Route three</option>
+            </select>
+
+            <div onClick={handPlay} className={play ? "stop" : "start"}>
+              {play ? "Stop" : "Start"}
+            </div>
+          </div>
         </div>
       </section>
-
-      {/* <button onClick={getServersPoint}>Get Servers Point</button> */}
-
-      <div className="simulator-play">
-        <select className="simulator-select" onChange={handTrip}>
-          <option value="0">Route one</option>
-          <option value="1">Route two</option>
-          <option value="2">Route three</option>
-        </select>
-
-        <div onClick={handPlay} className={play ? "stop" : "start"}>
-          {play ? "Stop" : "Start"}
-        </div>
-      </div>
     </div>
   );
 }

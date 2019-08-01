@@ -1,6 +1,6 @@
-@import './leaflet.css';
+@import "./leaflet.css";
 
-@import '../../../node_modules/eds-react/lib/assets/styles/themes/light.css';
+@import "../../../node_modules/eds-react/lib/assets/styles/themes/light.css";
 
 html {
   font-size: 16px;
@@ -214,8 +214,6 @@ h1 {
 }
 
 .simulator {
-  /* display: flex;
-  flex: 1; */
   color: #fff;
   background: #333;
 }
@@ -223,7 +221,7 @@ h1 {
 .simulator-cont {
   display: flex;
   flex: 1;
-  height: 600px;
+  height: 800px;
 }
 
 .simple-cont {
@@ -250,6 +248,7 @@ h1 {
   position: relative;
   overflow: hidden;
   flex: 1;
+  width: 400px;
 }
 
 .simulator-car {
@@ -263,7 +262,7 @@ h1 {
 }
 
 .simulator-log {
-  height: 100%;
+  height: 400px;
   overflow: hidden;
 }
 
