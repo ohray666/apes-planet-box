@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -7,6 +8,11 @@ import { TRIP_TWO } from '../../components/trip_path_20190714180533.js';
 
 import Map from '../../components/map.jsx';
 import { decode } from '../../utils/decode';
+=======
+import React, { useState, useEffect } from "react";
+
+import Map from "../../components/map.jsx";
+>>>>>>> Stashed changes
 
 export default function Simulator() {
   const [centerPoint, setCenterPoint] = useState([0, 0]);

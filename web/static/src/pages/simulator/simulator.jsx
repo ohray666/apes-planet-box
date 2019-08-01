@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import { CONF } from "../../../../config/config.js";
-import { testPoint } from "../../components/test.js";
 import SelectTrip from "../../components/selectTrip.jsx";
 import Map from "../../components/map.jsx";
 import reducer from "./simulator.reducer";
@@ -26,7 +25,8 @@ export default function Simulator() {
   const Trips = [TRIP_ONE, TRIP_TWO, TRIP_THREE];
 
   useEffect(() => {
-    getLocalPoint();
+    getAPIInit();
+    getLocalPoint(0);
   }, []);
 
   useEffect(() => {
@@ -41,33 +41,29 @@ export default function Simulator() {
   }, [play]);
 
   useEffect(() => {
-    if ([count]) {
+    if (redux && redux.localPoint && redux.localPoint.length < count) {
+      setPlay(!play);
+    } else if (redux && redux.localPoint && redux.localPoint[count + 1]) {
       setCount(count + 1);
-      if (redux.localPoint) {
-        setPosition(redux.localPoint[count]);
-        sendLocalPoint(redux.localPoint[count]);
-      }
-    } else {
-      goback();
     }
   }, [random]);
 
+  useEffect(() => {
+    if (redux && redux.localPoint && redux.localPoint[count]) {
+      setPosition(redux.localPoint[count]);
+      sendLocalPoint(redux.localPoint[count]);
+    }
+  }, [count]);
+
+  function getAPIInit() {
+    axios.get(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_INIT}`);
+  }
   function sendLocalPoint(point) {
     const postData = POST;
-    console.log(POST);
     postData.body.serviceData.telemetry[0].position.latitude = point[0];
     postData.body.serviceData.telemetry[0].position.longitude = point[1];
     axios
       .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
-      .then(res => {
-        const data = res.data;
-        dispatch({ type: "SERVERS_POINT", data });
-      });
-  }
-
-  function getServersPoint() {
-    axios
-      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, POST)
       .then(res => {
         const data = res.data;
         dispatch({ type: "SERVERS_POINT", data });
@@ -95,39 +91,40 @@ export default function Simulator() {
   }
 
   function handPlay() {
+    goback();
     setPlay(!play);
   }
 
   function goback() {
-    if (redux.localPoint && redux.localPoint[0]) {
-      setPosition(redux.localPoint[0]);
-    }
-    handPlay();
+    getAPIInit();
+    setCount(0);
   }
 
   function handTrip(e) {
+    getAPIInit();
     getLocalPoint(e.target.value);
   }
 
   function getLocalPoint(num) {
-    const routeNum = num || 0;
+    const routeNum = num;
     const positions = Trips[routeNum].VehicleSpecification.Basic.position;
     const positionValues = Object.values(positions).map(item => {
       return [Number(item.latitude), Number(item.longitude)];
     });
 
-    const pathStep = 0.00001;
+    const pathStep = 0.00002;
     const pointObj = new Points(positionValues, pathStep);
     const points = pointObj.get(positionValues);
 
     dispatch({ type: "LOCAL_POINT", data: points });
   }
 
+  console.log(reducer.serversPoint);
   return (
     <div className="pages home simulator">
       <section className="simulator-cont">
         <div className="simulator-card">
-          <div className="simulator-car" />
+          <Map center={position} currentPoint={position} />
         </div>
         <div className="simulator-card">
           <Map center={position} currentPoint={position} />
