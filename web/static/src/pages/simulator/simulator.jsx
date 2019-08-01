@@ -156,6 +156,7 @@ export default function Simulator() {
     getAPIInit();
     getLocalPoint(num);
     getServersPoint(num);
+    setMsg([]);
   }
 
   function getLocalPoint(num) {
