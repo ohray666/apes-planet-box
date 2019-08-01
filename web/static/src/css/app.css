@@ -1,6 +1,6 @@
-@import './leaflet.css';
+@import "./leaflet.css";
 
-@import '../../../node_modules/eds-react/lib/assets/styles/themes/dark.css';
+@import "../../../node_modules/eds-react/lib/assets/styles/themes/dark.css";
 
 html {
   font-size: 16px;
@@ -54,7 +54,7 @@ h1 {
   text-align: center;
 }
 
-.nav li:hover{
+.nav li:hover {
   background: #222222;
 }
 
@@ -259,10 +259,22 @@ h1 {
   background: #f95073;
 }
 
-.simulator-card {
+.simulator-before,
+.simulator-after,
+.simulator-msg {
   margin: 10px;
+  font-size: 30px;
   position: relative;
   overflow: hidden;
+}
+.simulator-before {
+  flex: 1;
+  width: 400px;
+}
+.simulator-after {
+  flex: 2;
+}
+.simulator-msg {
   flex: 1;
   width: 400px;
 }
@@ -278,7 +290,8 @@ h1 {
 }
 
 .simulator-log {
-  height: 400px;
+  margin-bottom: 30px;
+  height: 500px;
   overflow: hidden;
 }
 
