@@ -1,6 +1,6 @@
 import React from "react";
 import { hot, setConfig } from "react-hot-loader";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Simulator from "../simulator/simulator.jsx";
 import Simple from "../simple/simple.jsx";
@@ -23,6 +23,7 @@ class Routers extends React.Component {
         <Switch>
           <Route path="/simulator" component={Simulator} />
           <Route path="/simple" component={Simple} />
+          <Redirect path="/" to={{pathname: '/simulator'}} />
           <Route component={NotFound} />
         </Switch>
       </Router>

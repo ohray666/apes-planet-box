@@ -79,7 +79,7 @@ function CurrentMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(myIcon)}
-      key={1}
+      key={"current"}
     >
       <Popup>
         <div>Current point</div>
@@ -95,7 +95,7 @@ function TripStartMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(startIconStyle)}
-      key={1}
+      key={"start"}
     >
       <Popup>
         <div>Trip start point</div>
@@ -111,7 +111,7 @@ function TripEndMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(endIconStyle)}
-      key={1}
+      key={"end"}
     >
       <Popup>
         <div>Trip end point</div>
@@ -128,9 +128,9 @@ function TripPath({ path }) {
       textPathOptions={{
         repeat: true,
         offset: 6,
-        attributes: {
-          fill: "white",
-          "font-size": "16px"
+        style: {
+          color: "red",
+          opacity: 0.4
         }
       }}
     />

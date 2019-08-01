@@ -10,7 +10,7 @@ import { Path } from 'react-leaflet';
   // tslint:disable-next-line:variable-name
   let __onRemove = L.Polyline.prototype.onRemove;
   // tslint:disable-next-line:variable-name
-  let __updatePath = (L.Polyline.prototype)._updatePath;
+  let __updatePath = L.Polyline.prototype._updatePath;
   // tslint:disable-next-line:variable-name
   let __bringToFront = L.Polyline.prototype.bringToFront;
 
@@ -65,7 +65,7 @@ import { Path } from 'react-leaflet';
         repeat: false,
         fillColor: 'black',
         attributes: {},
-        below: false,
+        below: false
       };
       options = L.Util.extend(defaults, options);
 
@@ -97,7 +97,9 @@ import { Path } from 'react-leaflet';
         svg.removeChild(pattern);
 
         /* Create string as long as path */
-        text = new Array(Math.ceil(this._path.getTotalLength() / alength)).join(text);
+        text = new Array(Math.ceil(this._path.getTotalLength() / alength)).join(
+          text
+        );
       }
 
       /* Put it along the path using textPath */
@@ -106,7 +108,11 @@ import { Path } from 'react-leaflet';
 
       let dy = options.offset || this._path.getAttribute('stroke-width');
 
-      textPath.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + id);
+      textPath.setAttributeNS(
+        'http://www.w3.org/1999/xlink',
+        'xlink:href',
+        '#' + id
+      );
       textNode.setAttribute('dy', dy);
       for (let key in options.attributes) {
         textNode.setAttribute(key, options.attributes[key]);
@@ -144,10 +150,17 @@ import { Path } from 'react-leaflet';
         }
 
         let rotatecenterX = textNode.getBBox().x + textNode.getBBox().width / 2;
-        let rotatecenterY = textNode.getBBox().y + textNode.getBBox().height / 2;
+        let rotatecenterY =
+          textNode.getBBox().y + textNode.getBBox().height / 2;
         textNode.setAttribute(
           'transform',
-          'rotate(' + rotateAngle + ' ' + rotatecenterX + ' ' + rotatecenterY + ')',
+          'rotate(' +
+            rotateAngle +
+            ' ' +
+            rotatecenterX +
+            ' ' +
+            rotatecenterY +
+            ')'
         );
       }
 
@@ -159,14 +172,21 @@ import { Path } from 'react-leaflet';
 
         L.DomEvent.on(textNode, 'click', this._onMouseClick, this);
 
-        let events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
+        let events = [
+          'dblclick',
+          'mousedown',
+          'mouseover',
+          'mouseout',
+          'mousemove',
+          'contextmenu'
+        ];
         for (let i = 0; i < events.length; i++) {
           L.DomEvent.on(textNode, events[i], this._fireMouseEvent, this);
         }
       }
 
       return this;
-    },
+    }
   };
 
   L.Polyline.include(PolylineTextPath);
@@ -179,20 +199,21 @@ import { Path } from 'react-leaflet';
         }
       }
       return this;
-    },
+    }
   });
 })();
 
 class PolylineText extends Path {
   static propTypes = {
     positions: PropTypes.array.isRequired,
-    textPathOptions: PropTypes.object,
+    textPathOptions: PropTypes.object
   };
   createLeafletElement(props) {
     const { textPathOptions } = props;
     let line = L.polyline(props.positions, this.getOptions(props));
     if (textPathOptions) {
       line.setText(textPathOptions.text, textPathOptions);
+      line.setStyle(textPathOptions.style);
     }
     return line;
   }
