@@ -23,7 +23,7 @@ export default function Simulator() {
 
   const Trips = [TRIP_ONE, TRIP_TWO, TRIP_THREE];
 
-  console.log(serversPoints);
+  // console.log(serversPoints);
   useEffect(() => {
     getAPIInit();
     getLocalPoint(0);
@@ -60,9 +60,11 @@ export default function Simulator() {
     axios.get(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_INIT}`);
   }
 
-  function getServersPoint(localPoint) {
+  function getServersPoint(num) {
+    const routeNum = num;
+    const positions = Trips[routeNum];
     axios
-      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_TRIP}`, localPoint)
+      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_TRIP}`, positions)
       .then(res => {
         if (res.data && res.data.paths && res.data.paths.length > 0) {
           const instructions = res.data.paths[0].instructions
@@ -71,17 +73,21 @@ export default function Simulator() {
 
           const decodePoints = decode(res.data.paths[0].points, false);
           decodePoints.map((item, key) => {
+            if (!instructions[key]) {
+              return;
+            }
             const text = instructions[key].split(",");
             let textState;
+
             switch (text[0]) {
               case "0":
                 textState = "起点:";
                 break;
               case "2":
-                textState = "右转:";
+                textState = "右转";
                 break;
               case "-2":
-                textState = "左转:";
+                textState = "左转";
                 break;
               case "4":
                 textState = "到达终点";
@@ -136,13 +142,14 @@ export default function Simulator() {
   }
 
   function handTrip(e) {
+    const num = e.target.value;
     getAPIInit();
-    getLocalPoint(e.target.value);
+    getLocalPoint(num);
+    getServersPoint(num);
   }
 
   function getLocalPoint(num) {
     const routeNum = num;
-    getServersPoint(Trips[routeNum]);
     const positions = Trips[routeNum].VehicleSpecification.Basic.position;
     const positionValues = Object.values(positions).map(item => {
       return [Number(item.latitude), Number(item.longitude)];
@@ -153,6 +160,7 @@ export default function Simulator() {
     const points = pointObj.get(positionValues);
 
     setLocalPoints(points);
+    getServersPoint(routeNum);
   }
 
   return (
