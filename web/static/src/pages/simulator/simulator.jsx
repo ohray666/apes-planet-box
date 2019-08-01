@@ -58,7 +58,7 @@ export default function Simulator() {
     postData.body.serviceData.telemetry[0].position.latitude = point[0];
     postData.body.serviceData.telemetry[0].position.longitude = point[1];
     axios
-      .post(`${CONF.HOST}/${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
+      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
       .then(res => {
         const data = res.data;
         dispatch({ type: "SERVERS_POINT", data });
@@ -67,7 +67,7 @@ export default function Simulator() {
 
   function getServersPoint() {
     axios
-      .post(`${CONF.HOST}/${CONF.PORT}/${CONF.PATH_SNAP}`, POST)
+      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, POST)
       .then(res => {
         const data = res.data;
         dispatch({ type: "SERVERS_POINT", data });
