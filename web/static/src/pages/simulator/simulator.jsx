@@ -13,16 +13,17 @@ import { TRIP_THREE } from "../../components/trip_path_20190729201805";
 export default function Simulator() {
   const [play, setPlay] = useState(false);
   const [random, setRandom] = useState();
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(-1);
   const [localPoints, setLocalPoints] = useState();
   const [localPosition, setLocalPosition] = useState([0, 0]);
   const [serversPoints, setServersPoints] = useState();
   const [serversPosition, setServersPosition] = useState([0, 0]);
-  const [msg, setMsg] = useState([0]);
+  const [msg, setMsg] = useState([]);
   const [actionClass, setActionClass] = useState("");
 
   const Trips = [TRIP_ONE, TRIP_TWO, TRIP_THREE];
 
+  console.log(serversPoints);
   useEffect(() => {
     getAPIInit();
     getLocalPoint(0);
@@ -40,15 +41,16 @@ export default function Simulator() {
   }, [play]);
 
   useEffect(() => {
-    if (localPoints && localPoints.length < count) {
+    if (serversPoints && serversPoints.length < count) {
       setPlay(!play);
-    } else if (localPoints && localPoints[count + 1]) {
+    } else if (serversPoints && serversPoints[count + 1]) {
       setCount(count + 1);
     }
   }, [random]);
 
   useEffect(() => {
-    if (localPoints && localPoints[count]) {
+    if (serversPoints && serversPoints[count]) {
+      creatMsg();
       setLocalPosition(localPoints[count]);
       setServersPosition(serversPoints[count]);
     }
@@ -66,11 +68,29 @@ export default function Simulator() {
           const instructions = res.data.paths[0].instructions
             .slice(1, -1)
             .match(/[^\(\)]+(?=\))/g);
-          // [(0, 龙口中路, 161.58377057248714, 11632), (2,, 99.86226513671605, 11981), (4,, 0.0, 0)];
+
           const decodePoints = decode(res.data.paths[0].points, false);
-          // decodePoints.map((item, key) => {
-          //   return { ...item, instruction: instruction[key] };
-          // });
+          decodePoints.map((item, key) => {
+            const text = instructions[key].split(",");
+            let textState;
+            switch (text[0]) {
+              case "0":
+                textState = "起点:";
+                break;
+              case "2":
+                textState = "右转:";
+                break;
+              case "-2":
+                textState = "左转:";
+                break;
+              case "4":
+                textState = "到达终点";
+                break;
+            }
+            const tips = `${textState || ""}${text[1]}`;
+            item.push(tips);
+          });
+          console.log(decodePoints);
           const pathStep = 0.00002;
           const pointServersObj = new Points(decodePoints, pathStep);
           const points = pointServersObj.get(decodePoints);
@@ -83,13 +103,15 @@ export default function Simulator() {
   }
 
   function creatMsg() {
-    setActionClass("action");
-    setTimeout(() => {
-      setActionClass("");
-    }, 40);
+    if (serversPoints && serversPoints[count] && serversPoints[count][2]) {
+      setActionClass("action");
+      setTimeout(() => {
+        setActionClass("");
+      }, 40);
 
-    const msgText = [msg[0] + 10];
-    setMsg(msgText.concat(msg));
+      const msgText = serversPoints[count][2];
+      setMsg([msgText].concat(msg));
+    }
   }
 
   function renderMsg() {
