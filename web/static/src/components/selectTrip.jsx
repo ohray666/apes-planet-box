@@ -1,42 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 
 import Points from "../pages/simulator/points";
 import { TRIP_ONE } from "./trip_path_20190713154335.js";
 import { TRIP_TWO } from "./trip_path_20190714180533.js";
 import { TRIP_THREE } from "./trip_path_20190729201805";
+import reducer from "../pages/simulator/simulator.reducer";
 
 export default function SelectTrip() {
-  const [positionAll, setPositionAll] = useState();
-  const Trips = {
-    TRIP_ONE,
-    TRIP_TWO,
-    TRIP_THREE
-  };
+  const [redux, dispatch] = useReducer(reducer);
+  const Trips = [TRIP_ONE, TRIP_TWO, TRIP_THREE];
 
-  console.log(Trips);
+  useEffect(() => {
+    getLocalPoint();
+  }, []);
 
-  function handTrip(e) {
-    console.log(e.target.value);
-    const positions = Trips[e.target.value].VehicleSpecification.Basic.position;
+  function getLocalPoint(num) {
+    const routeNum = num || 0;
+    const positions = Trips[routeNum].VehicleSpecification.Basic.position;
     const positionValues = Object.values(positions).map(item => {
-      return { point: { lat: item.latitude, lon: item.longitude } };
+      return [Number(item.latitude), Number(item.longitude)];
     });
 
-    const pathStep = 0.00001;
+    const pathStep = 0.000001;
     const pointObj = new Points(positionValues, pathStep);
     const points = pointObj.get(positionValues);
-    console.log(points);
 
-    setPositionAll(positionValues);
+    dispatch({ type: "LOCAL_POINT", data: points });
   }
-
-  console.log(positionAll);
-
+  function handTrip(e) {
+    getLocalPoint(e.target.value);
+  }
   return (
     <select onChange={handTrip}>
-      <option value="TRIP_ONE">Trip one</option>
-      <option value="TRIP_TWO">Trip two</option>
-      <option value="TRIP_THREE">Trip three</option>
+      <option value="0">Route one</option>
+      <option value="1">Route two</option>
+      <option value="2">Route three</option>
     </select>
   );
 }

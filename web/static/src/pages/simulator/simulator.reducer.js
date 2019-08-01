@@ -1,32 +1,11 @@
-import axios from "axios";
-
-export const alarmDetailReducerKey = "alarmDetail";
-
-// Action
-export const ALARM_LOADING = "ALARM_LOADING";
-export const ALARM_LOAD_OK = "ALARM_LOAD_OK";
-
-// Reducer
-const initState = {
-  positionArray: []
-};
-
-export default (state = initState, action) => {
-  let data = action.payload;
-
+export default function reducer(redux = {}, action) {
   switch (action.type) {
-    case ALARM_LOADING:
-      return Object.assign({}, state, data);
+    case "SERVERS_POINT":
+      return { ...redux, serversPoint: action.data };
+    case "LOCAL_POINT":
+      return { ...redux, localPoint: action.data };
     default:
-      return state;
+      //   throw new Error("Unexpected action");
+      return redux;
   }
-};
-
-// Action Create
-
-export const actions = {
-  initProps: () => {
-    const payload = initState;
-    return { type: ALARM_LOADING, payload };
-  }
-};
+}
