@@ -16,10 +16,10 @@ export default function Simulator() {
   const [startPoint, setStartPoint] = useState([0, 0]);
   const [endPoint, setEndPoint] = useState([0, 0]);
 
-  const [tripNum, setTripNum] = useState('1');
+  const [tripNum, setTripNum] = useState('0');
 
   const [optimizedTrip, setOptimizedTrip] = useState([]);
-  const [originalTrip, setOriginalTrip] = useState(transferTrip(1));
+  const [originalTrip, setOriginalTrip] = useState(transferTrip(0));
 
   useEffect(() => {
     setOptimizedTrip([]);

@@ -1,10 +1,16 @@
-import React from "react";
-import { hot, setConfig } from "react-hot-loader";
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import { hot, setConfig } from 'react-hot-loader';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 
-import Simulator from "../simulator/simulator.jsx";
-import Simple from "../simple/simple.jsx";
-import NotFound from "../not-found/not-found.jsx";
+import Simulator from '../simulator/simulator.jsx';
+import Simple from '../simple/simple.jsx';
+import NotFound from '../not-found/not-found.jsx';
 
 class Routers extends React.Component {
   render() {
@@ -13,17 +19,17 @@ class Routers extends React.Component {
         <nav className="nav">
           <ul>
             <li>
-              <Link to="/simulator">Simulator</Link>
+              <Link to="/static">static trip path</Link>
             </li>
             <li>
-              <Link to="/simple">Simple</Link>
+              <Link to="/live">live snail trail</Link>
             </li>
           </ul>
         </nav>
         <Switch>
-          <Route path="/simulator" component={Simulator} />
-          <Route path="/simple" component={Simple} />
-          <Redirect path="/" to={{pathname: '/simulator'}} />
+          <Route path="/live" component={Simulator} />
+          <Route path="/static" component={Simple} />
+          <Redirect path="/" to={{ pathname: '/static' }} />
           <Route component={NotFound} />
         </Switch>
       </Router>

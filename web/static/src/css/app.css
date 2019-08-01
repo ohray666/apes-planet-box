@@ -1,6 +1,6 @@
-@import "./leaflet.css";
+@import './leaflet.css';
 
-@import "../../../node_modules/eds-react/lib/assets/styles/themes/dark.css";
+@import '../../../node_modules/eds-react/lib/assets/styles/themes/dark.css';
 
 html {
   font-size: 16px;
