@@ -1,6 +1,6 @@
 @import './leaflet.css';
 
-@import '../../../node_modules/eds-react/lib/assets/styles/themes/light.css';
+@import '../../../node_modules/eds-react/lib/assets/styles/themes/dark.css';
 
 html {
   font-size: 16px;
@@ -227,9 +227,21 @@ h1 {
 }
 
 .simple-cont {
-  display: flex;
-  flex: 1;
   height: 100%;
+}
+
+.simple-select {
+  font-size: 20px;
+  height: 68px;
+  margin-bottom: 16px;
+}
+
+.simple-select > p {
+  margin-bottom: 10px;
+}
+
+.simple-map {
+  height: calc(100% - 84px);
 }
 
 .start,

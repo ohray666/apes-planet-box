@@ -1,7 +1,13 @@
 import { default as PolylineText } from './polyLine';
 
 import React from 'react';
-import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  Map as LeafletMap,
+  TileLayer,
+  Marker,
+  Popup,
+  Tooltip
+} from 'react-leaflet';
 import { divIcon } from 'leaflet';
 
 const myIcon = {
@@ -16,6 +22,12 @@ const startIconStyle = {
   iconAnchor: [5, 5],
   html: `<div style="background:#ffffff;width:20px;height:20px;border-radius:50%;border:#0082f0 solid 4px" />`
 };
+const middleIconStyle = {
+  className: 'mid-icon',
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  html: `<div style="border:3px solid white;background:#4990e2;width:8px;height:8px;border-radius:50%" />`
+};
 const endIconStyle = {
   className: 'end-icon',
   iconSize: [10, 10],
@@ -29,6 +41,7 @@ export default function SimulatorMap({
   optimizedTrip,
   currentPoint,
   startPoint,
+  middlePoint,
   endPoint
 }) {
   return (
@@ -49,7 +62,7 @@ export default function SimulatorMap({
       <TripStartMarker point={startPoint} />
       <TripEndMarker point={endPoint} />
       <TripPath path={originalTrip} color={'red'} />
-      <TripPath path={optimizedTrip} color={'green'} />
+      <TripPath path={optimizedTrip} />
     </LeafletMap>
   );
 
@@ -106,6 +119,24 @@ function TripStartMarker({ point }) {
   ) : null;
 }
 
+function TripMiddleMarker({ trip }) {
+  return trip && trip.length ? (
+    <div>
+      {trip.map((point, index) => (
+        <Marker
+          key={`middle_${index}`}
+          position={point}
+          icon={divIcon(middleIconStyle)}
+        >
+          <Tooltip>
+            <span>Trip middle point</span>
+          </Tooltip>
+        </Marker>
+      ))}
+    </div>
+  ) : null;
+}
+
 function TripEndMarker({ point }) {
   return point ? (
     <Marker
@@ -124,17 +155,28 @@ function TripEndMarker({ point }) {
 
 function TripPath({ path, color }) {
   return path && path.length ? (
-    <PolylineText
-      positions={path}
-      weight={8}
-      textPathOptions={{
-        repeat: true,
-        offset: 6,
-        style: {
-          color: color,
-          opacity: 0.4
-        }
-      }}
-    />
+    <>
+      <PolylineText
+        positions={path}
+        weight={8}
+        textPathOptions={{
+          text: '     >     ',
+          repeat: true,
+          offset: 6,
+          attributes: {
+            fill: 'white',
+            'font-size': '16px'
+          },
+          style: color
+            ? {
+                color: color,
+                opacity: 0.8,
+                weight: 5
+              }
+            : { weight: 5 }
+        }}
+      />
+      <TripMiddleMarker trip={path} />
+    </>
   ) : null;
 }
