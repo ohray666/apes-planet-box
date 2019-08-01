@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
+import { CONF } from "../../../../config/config.js";
 import { testPoint } from "../../components/test.js";
 import SelectTrip from "../../components/selectTrip.jsx";
 import Map from "../../components/map.jsx";
@@ -10,6 +11,7 @@ import Points from "./points";
 import { TRIP_ONE } from "../../components/trip_path_20190713154335.js";
 import { TRIP_TWO } from "../../components/trip_path_20190714180533.js";
 import { TRIP_THREE } from "../../components/trip_path_20190729201805";
+import POST from "./post.js";
 
 export default function Simulator() {
   const [redux, dispatch] = useReducer(reducer, {});
@@ -43,19 +45,28 @@ export default function Simulator() {
       setCount(count + 1);
       if (redux.localPoint) {
         setPosition(redux.localPoint[count]);
+        sendLocalPoint(redux.localPoint[count]);
       }
     } else {
       goback();
     }
   }, [random]);
 
+  function sendLocalPoint(point) {
+    const postData = POST;
+    postData.body.serviceData.telemetry.position.latitude = point[0];
+    postData.body.serviceData.telemetry.position.longitude = point[1];
+    axios
+      .post(`${CONF.HOST}/${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
+      .then(res => {
+        const data = res.data;
+        dispatch({ type: "SERVERS_POINT", data });
+      });
+  }
+
   function getServersPoint() {
     axios
-      .get("http://localhost:8090/getdata", {
-        params: {
-          id: 12345
-        }
-      })
+      .post(`${CONF.HOST}/${CONF.PORT}/${CONF.PATH_SNAP}`, POST)
       .then(res => {
         const data = res.data;
         dispatch({ type: "SERVERS_POINT", data });
@@ -128,7 +139,7 @@ export default function Simulator() {
       {/* <button onClick={getServersPoint}>Get Servers Point</button> */}
 
       <div className="simulator-play">
-        <select onChange={handTrip}>
+        <select className="simulator-select" onChange={handTrip}>
           <option value="0">Route one</option>
           <option value="1">Route two</option>
           <option value="2">Route three</option>
