@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import { CONF } from "../../../../config/config.js";
-import SelectTrip from "../../components/selectTrip.jsx";
+import { decode } from "../../utils/decode";
 import Map from "../../components/map.jsx";
 import reducer from "./simulator.reducer";
 
@@ -19,6 +19,8 @@ export default function Simulator() {
   const [random, setRandom] = useState();
   const [count, setCount] = useState(0);
   const [position, setPosition] = useState([0, 0]);
+  const [serversPoints, setServersPoints] = useState();
+  const [serversPosition, setServersPosition] = useState([0, 0]);
   const [msg, setMsg] = useState([0]);
   const [actionClass, setActionClass] = useState("");
 
@@ -51,22 +53,39 @@ export default function Simulator() {
   useEffect(() => {
     if (redux && redux.localPoint && redux.localPoint[count]) {
       setPosition(redux.localPoint[count]);
-      sendLocalPoint(redux.localPoint[count]);
+      setServersPosition(serversPoints[count]);
     }
   }, [count]);
 
   function getAPIInit() {
     axios.get(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_INIT}`);
   }
-  function sendLocalPoint(point) {
-    const postData = POST;
-    postData.body.serviceData.telemetry[0].position.latitude = point[0];
-    postData.body.serviceData.telemetry[0].position.longitude = point[1];
+  // function sendLocalPoint(point) {
+  //   const postData = POST;
+  //   postData.body.serviceData.telemetry[0].position.latitude = point[0];
+  //   postData.body.serviceData.telemetry[0].position.longitude = point[1];
+  //   axios
+  //     .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
+  //     .then(res => {
+  //       const data = res.data.paths[0].points;
+  //       dispatch({ type: "SERVERS_POINT", data });
+  //     });
+  // }
+
+  function getServersPoint(localPoint) {
     axios
-      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
+      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_TRIP}`, localPoint)
       .then(res => {
-        const data = res.data.paths[0].points;
-        dispatch({ type: "SERVERS_POINT", data });
+        if (res.data && res.data.paths && res.data.paths.length > 0) {
+          const decodePoints = decode(res.data.paths[0].points, false);
+          const pathStep = 0.00002;
+          const pointServersObj = new Points(decodePoints, pathStep);
+          const points = pointServersObj.get(decodePoints);
+
+          setServersPoints(points);
+        } else {
+          console.warn("get path problem");
+        }
       });
   }
 
@@ -107,6 +126,7 @@ export default function Simulator() {
 
   function getLocalPoint(num) {
     const routeNum = num;
+    getServersPoint(Trips[routeNum]);
     const positions = Trips[routeNum].VehicleSpecification.Basic.position;
     const positionValues = Object.values(positions).map(item => {
       return [Number(item.latitude), Number(item.longitude)];
@@ -119,7 +139,10 @@ export default function Simulator() {
     dispatch({ type: "LOCAL_POINT", data: points });
   }
 
-  console.log(redux.serversPoint);
+  // if (redux && redux.serversPoint) {
+  //   console.log(decode(redux.serversPoint, false));
+  // }
+
   return (
     <div className="pages home simulator">
       <section className="simulator-cont">
@@ -127,7 +150,7 @@ export default function Simulator() {
           <Map center={position} currentPoint={position} />
         </div>
         <div className="simulator-card">
-          <Map center={position} currentPoint={position} />
+          <Map center={serversPosition} currentPoint={serversPosition} />
         </div>
         <div className="simulator-card">
           <ul className="simulator-log">{renderMsg()}</ul>
