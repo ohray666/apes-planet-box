@@ -33,7 +33,7 @@ export default function Simulator() {
     if (play) {
       const startMove = setInterval(() => {
         setRandom(Math.random());
-      }, 100);
+      }, 200);
       return () => {
         clearInterval(startMove);
       };
@@ -65,7 +65,7 @@ export default function Simulator() {
     axios
       .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
       .then(res => {
-        const data = res.data;
+        const data = res.data.paths[0].points;
         dispatch({ type: "SERVERS_POINT", data });
       });
   }
@@ -119,7 +119,7 @@ export default function Simulator() {
     dispatch({ type: "LOCAL_POINT", data: points });
   }
 
-  console.log(reducer.serversPoint);
+  console.log(redux.serversPoint);
   return (
     <div className="pages home simulator">
       <section className="simulator-cont">
