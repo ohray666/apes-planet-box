@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// import { testPoint } from '../../components/test.js';
+import { CONF } from "../../../../config/config.js";
 import { TRIP_ONE } from '../../components/trip_path_20190713154335.js';
 import { TRIP_TWO } from '../../components/trip_path_20190714180533.js';
 
@@ -63,7 +63,7 @@ export default function Simulator() {
 
   function getServersPoint() {
     axios
-      .post('http://100.98.137.10:8879/v1/pos-match/123?type=poi', TRIP_TWO)
+      .post(`${CONF.HOST}:${CONF.PORT}/${CONF.PATH_TRIP}`, TRIP_TWO)
       .then(res => {
         res.data && res.data.paths && res.data.paths.length > 0
           ? setOptimizedTrip(decode(res.data.paths[0].points, false))
