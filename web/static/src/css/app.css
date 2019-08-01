@@ -268,14 +268,14 @@ h1 {
   overflow: hidden;
 }
 .simulator-before {
-  flex: 1;
+  flex: 4;
   width: 400px;
 }
 .simulator-after {
-  flex: 2;
+  flex: 4;
 }
 .simulator-msg {
-  flex: 1;
+  flex: 2;
   width: 400px;
 }
 
