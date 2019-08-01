@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import { CONF } from "../../../../config/config.js";
 import { TRIP_ONE } from '../../components/trip_path_20190713154335.js';
 import { TRIP_TWO } from '../../components/trip_path_20190714180533.js';
-
 import Map from '../../components/map.jsx';
 import { decode } from '../../utils/decode';
 
@@ -67,7 +66,7 @@ export default function Simulator() {
       .then(res => {
         res.data && res.data.paths && res.data.paths.length > 0
           ? setOptimizedTrip(decode(res.data.paths[0].points, false))
-          : console.warn('get path problem');
+          : console.warn("get path problem");
       });
   }
 
