@@ -30,6 +30,14 @@ export default function Simulator() {
   }, []);
 
   useEffect(() => {
+    setLocalPosition(localPoints[0]);
+  }, localPoints);
+
+  useEffect(() => {
+    setServersPosition(serversPoints[0]);
+  }, serversPoints);
+
+  useEffect(() => {
     if (play) {
       const startMove = setInterval(() => {
         setRandom(Math.random());
