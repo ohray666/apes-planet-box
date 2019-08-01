@@ -54,6 +54,10 @@ h1 {
   text-align: center;
 }
 
+.nav li:hover{
+  background: #222222;
+}
+
 .nav a {
   color: whitesmoke;
   text-decoration: none;
