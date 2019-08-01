@@ -39,8 +39,8 @@ export function decode(encoded, is3D) {
       } while (b >= 0x20);
       var deltaEle = result & 1 ? ~(result >> 1) : result >> 1;
       ele += deltaEle;
-      array.push([lng * 1e-5, lat * 1e-5, ele / 100]);
-    } else array.push([lng * 1e-5, lat * 1e-5]);
+      array.push([lat * 1e-5, lng * 1e-5, ele / 100]);
+    } else array.push([lat * 1e-5, lng * 1e-5]);
   }
   // var end = new Date().getTime();
   // console.log("decoded " + len + " coordinates in " + ((end - start) / 1000) + "s");

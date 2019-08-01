@@ -1,6 +1,6 @@
-@import "./leaflet.css";
+@import './leaflet.css';
 
-@import "../../../node_modules/eds-react/lib/assets/styles/themes/light.css";
+@import '../../../node_modules/eds-react/lib/assets/styles/themes/light.css';
 
 html {
   font-size: 16px;
@@ -25,6 +25,7 @@ image {
 #app {
   font-family: Roboto, Helvetica Neue, Arial, sans-serif;
   min-height: 100%;
+  height: 100%;
   background: #f5f8fc;
 }
 
@@ -67,6 +68,7 @@ h1 {
 /* page Home */
 .home {
   font-size: 100px;
+  height: 100%;
 }
 
 /* page hook*/
@@ -222,6 +224,12 @@ h1 {
   display: flex;
   flex: 1;
   height: 600px;
+}
+
+.simple-cont {
+  display: flex;
+  flex: 1;
+  height: 100%;
 }
 
 .start,

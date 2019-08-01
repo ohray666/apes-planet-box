@@ -1,23 +1,23 @@
-import { default as PolylineText } from "./polyLine";
+import { default as PolylineText } from './polyLine';
 
-import React from "react";
-import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
-import { divIcon } from "leaflet";
+import React from 'react';
+import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
+import { divIcon } from 'leaflet';
 
 const myIcon = {
   iconSize: [40, 40],
   iconAnchor: [20, 20],
-  className: "icon-car",
+  className: 'icon-car',
   html: `<span></span>`
 };
 const startIconStyle = {
-  className: "start-icon",
+  className: 'start-icon',
   iconSize: [10, 10],
   iconAnchor: [5, 5],
   html: `<div style="background:#ffffff;width:20px;height:20px;border-radius:50%;border:#0082f0 solid 4px" />`
 };
 const endIconStyle = {
-  className: "end-icon",
+  className: 'end-icon',
   iconSize: [10, 10],
   iconAnchor: [5, 5],
   html: `<div style="background:#0082f0;width:24px;height:24px;border-radius:50%;border:#ffffff solid 4px" />`
@@ -25,7 +25,8 @@ const endIconStyle = {
 
 export default function SimulatorMap({
   center,
-  trip,
+  originalTrip,
+  optimizedTrip,
   currentPoint,
   startPoint,
   endPoint
@@ -47,25 +48,26 @@ export default function SimulatorMap({
       <CurrentMarker point={currentPoint} />
       <TripStartMarker point={startPoint} />
       <TripEndMarker point={endPoint} />
-      <TripPath path={trip} />
+      <TripPath path={originalTrip} color={'red'} />
+      <TripPath path={optimizedTrip} color={'blue'} />
     </LeafletMap>
   );
 
   function getBound() {
-    if (trip) {
-      return trip;
+    if (originalTrip && optimizedTrip) {
+      return originalTrip.concat(optimizedTrip);
+    } else if (originalTrip) {
+      return originalTrip;
     }
     // 若起止点坐标相同，则map的fixBounds会报错，rta引用leaflet的_getBoundsCenterZoom方法与dev不同 lixiaojia
     if (
       startPoint &&
       endPoint &&
-      startPoint.lat !== endPosition.lat &&
-      startPoint.lon !== endPosition.lon
+      startPoint[0] !== endPosition[0] &&
+      startPoint[1] !== endPosition[1]
     ) {
       // 没有中途点的时候，先默认按起始点显示边界
-      const startBounds = [startPoint.lat, startPoint.lon];
-      const endBounds = [endPoint.lat, endPoint.lon];
-      return [startBounds, endBounds];
+      return [startPoint, endPosition];
     } else {
       return undefined;
     }
@@ -79,7 +81,7 @@ function CurrentMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(myIcon)}
-      key={"current"}
+      key={'current'}
     >
       <Popup>
         <div>Current point</div>
@@ -95,7 +97,7 @@ function TripStartMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(startIconStyle)}
-      key={"start"}
+      key={'start'}
     >
       <Popup>
         <div>Trip start point</div>
@@ -111,7 +113,7 @@ function TripEndMarker({ point }) {
       duration={1000}
       position={point}
       icon={divIcon(endIconStyle)}
-      key={"end"}
+      key={'end'}
     >
       <Popup>
         <div>Trip end point</div>
@@ -120,7 +122,7 @@ function TripEndMarker({ point }) {
   ) : null;
 }
 
-function TripPath({ path }) {
+function TripPath({ path, color }) {
   return path && path.length ? (
     <PolylineText
       positions={path}
@@ -129,7 +131,7 @@ function TripPath({ path }) {
         repeat: true,
         offset: 6,
         style: {
-          color: "red",
+          color: color,
           opacity: 0.4
         }
       }}
