@@ -11,7 +11,7 @@ import Points from "./points";
 import { TRIP_ONE } from "../../components/trip_path_20190713154335.js";
 import { TRIP_TWO } from "../../components/trip_path_20190714180533.js";
 import { TRIP_THREE } from "../../components/trip_path_20190729201805";
-import POST from "./post.js";
+import { POST } from "./post.js";
 
 export default function Simulator() {
   const [redux, dispatch] = useReducer(reducer, {});
@@ -54,8 +54,9 @@ export default function Simulator() {
 
   function sendLocalPoint(point) {
     const postData = POST;
-    postData.body.serviceData.telemetry.position.latitude = point[0];
-    postData.body.serviceData.telemetry.position.longitude = point[1];
+    console.log(POST);
+    postData.body.serviceData.telemetry[0].position.latitude = point[0];
+    postData.body.serviceData.telemetry[0].position.longitude = point[1];
     axios
       .post(`${CONF.HOST}/${CONF.PORT}/${CONF.PATH_SNAP}`, postData)
       .then(res => {
