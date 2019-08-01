@@ -59,6 +59,9 @@ export default function Simulator() {
   useEffect(() => {
     if (serversPoints && serversPoints[count]) {
       creatMsg();
+      console.log(count);
+      console.log(localPoints.length, serversPoints.length);
+      // if(count > localPoints.length)
       setLocalPosition(localPoints[count]);
       setServersPosition(serversPoints[count]);
     }
@@ -84,18 +87,18 @@ export default function Simulator() {
             if (!instructions[key]) {
               return;
             }
-            const text = instructions[key].split(",");
+            const text = instructions[key].split(',');
             let textState;
 
             switch (text[0]) {
               case "0":
                 textState = "起点:";
                 break;
-              case "2":
-                textState = "右转";
+              case '2':
+                textState = '右转';
                 break;
-              case "-2":
-                textState = "左转";
+              case '-2':
+                textState = '左转';
                 break;
               case "4":
                 textState = "到达终点";
@@ -181,7 +184,11 @@ export default function Simulator() {
           <div>Before:</div>
           <Map
             center={localPosition}
-            currentPoint={localPosition}
+            currentPoint={
+              localPosition
+                ? localPosition
+                : localPoints[localPoints.length - 1]
+            }
             originalTrip={localPoints.slice(0, count)}
             isLive
           />
@@ -190,7 +197,11 @@ export default function Simulator() {
           <div>After:</div>
           <Map
             center={serversPosition}
-            currentPoint={serversPosition}
+            currentPoint={
+              serversPosition
+                ? serversPosition
+                : serversPoints[serversPoints.length - 1]
+            }
             optimizedTrip={serversPoints.slice(0, count)}
             isLive
           />
