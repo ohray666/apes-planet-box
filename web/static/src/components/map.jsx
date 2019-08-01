@@ -1,23 +1,23 @@
-import { default as PolylineText } from './polyLine';
+import { default as PolylineText } from "./polyLine";
 
-import React from 'react';
-import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
-import { divIcon } from 'leaflet';
+import React from "react";
+import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
 
 const myIcon = {
   iconSize: [40, 40],
   iconAnchor: [20, 20],
-  className: 'icon-car',
+  className: "icon-car",
   html: `<span></span>`
 };
 const startIconStyle = {
-  className: 'start-icon',
+  className: "start-icon",
   iconSize: [10, 10],
   iconAnchor: [5, 5],
   html: `<div style="background:#ffffff;width:20px;height:20px;border-radius:50%;border:#0082f0 solid 4px" />`
 };
 const endIconStyle = {
-  className: 'end-icon',
+  className: "end-icon",
   iconSize: [10, 10],
   iconAnchor: [5, 5],
   html: `<div style="background:#0082f0;width:24px;height:24px;border-radius:50%;border:#ffffff solid 4px" />`
@@ -32,7 +32,7 @@ export default function SimulatorMap({
 }) {
   return (
     <LeafletMap
-      center={transferPoint(center)}
+      center={center}
       animation={true}
       duration={1000}
       zoom={getBound() ? undefined : 18}
@@ -44,18 +44,12 @@ export default function SimulatorMap({
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://osmmaps.ecf.cloud/osm_tiles/{z}/{x}/{y}.png?access_token=b3NtOjFxMnczZTRy7"
       />
-      <CurrentMarker point={transferPoint(currentPoint)} />
-      <TripStartMarker point={transferPoint(startPoint)} />
-      <TripEndMarker point={transferPoint(endPoint)} />
+      <CurrentMarker point={currentPoint} />
+      <TripStartMarker point={startPoint} />
+      <TripEndMarker point={endPoint} />
       <TripPath path={trip} />
     </LeafletMap>
   );
-
-  function transferPoint(point) {
-    if (point) {
-      return [Number(point.lat), Number(point.lon)];
-    }
-  }
 
   function getBound() {
     if (trip) {

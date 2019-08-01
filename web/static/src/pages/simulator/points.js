@@ -2,7 +2,7 @@ class Points {
   constructor(point = [], pointStep) {
     this.pointParam = point;
     this.pointLengh = point.length;
-    this.mapStep = pointStep || 0.000001;
+    this.mapStep = pointStep;
     this.points = [point[0]];
   }
 
@@ -17,23 +17,19 @@ class Points {
       let times = 0;
       if (pointPrev && pointNext) {
         pathLine = Math.sqrt(
-          Math.pow(pointPrev.point.lat - pointNext.point.lat, 2) +
-            Math.pow(pointPrev.point.lon - pointNext.point.lon, 2)
+          Math.pow(pointPrev[0] - pointNext[0], 2) +
+            Math.pow(pointPrev[1] - pointNext[1], 2)
         );
         times = parseInt(pathLine / this.mapStep);
         if (times > 1) {
           let stepPoint;
           for (let j = 1; j < times; j++) {
-            const latInset =
-              ((pointNext.point.lat - pointPrev.point.lat) / times) * j;
-            const lonInset =
-              ((pointNext.point.lon - pointPrev.point.lon) / times) * j;
-            stepPoint = {
-              point: {
-                lat: pointPrev.point.lat * 1 + latInset.toFixed(9) * 1,
-                lon: pointPrev.point.lon * 1 + lonInset.toFixed(9) * 1
-              }
-            };
+            const latInset = ((pointNext[0] - pointPrev[0]) / times) * j;
+            const lonInset = ((pointNext[1] - pointPrev[1]) / times) * j;
+            stepPoint = [
+              pointPrev[0] * 1 + latInset.toFixed(9) * 1,
+              pointPrev[1] * 1 + lonInset.toFixed(9) * 1
+            ];
             this.points.push(stepPoint);
           }
         }
