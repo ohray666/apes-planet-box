@@ -42,27 +42,28 @@ export default function SimulatorMap({
   currentPoint,
   startPoint,
   middlePoint,
-  endPoint
+  endPoint,
+  isLive
 }) {
   return (
     <LeafletMap
-      center={center}
+      center={getPoint(center)}
       animation={true}
       duration={1000}
-      zoom={getBound() ? undefined : 18}
+      zoom={isLive ? 18 : undefined}
       zoomControl={false}
       // scrollWheelZoom={false}
-      bounds={getBound()}
+      bounds={isLive ? undefined : getBound()}
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://osmmaps.ecf.cloud/osm_tiles//{z}/{x}/{y}.png?access_token=b3NtOjFxMnczZTRy7"
       />
-      <CurrentMarker point={currentPoint} />
+      <CurrentMarker point={getPoint(currentPoint)} />
       <TripStartMarker point={startPoint} />
       <TripEndMarker point={endPoint} />
-      <TripPath path={originalTrip} color={'red'} />
-      <TripPath path={optimizedTrip} />
+      <TripPath path={originalTrip} color={'red'} isLive={isLive} />
+      <TripPath path={optimizedTrip} isLive={isLive} />
     </LeafletMap>
   );
 
@@ -84,6 +85,14 @@ export default function SimulatorMap({
     } else {
       return undefined;
     }
+  }
+
+  function getPoint(point) {
+    return isLive && point
+      ? point.length === 2
+        ? point
+        : point.splice[(0, 1)]
+      : point;
   }
 }
 
@@ -153,30 +162,44 @@ function TripEndMarker({ point }) {
   ) : null;
 }
 
-function TripPath({ path, color }) {
-  return path && path.length ? (
-    <>
-      <PolylineText
-        positions={path}
-        weight={8}
-        textPathOptions={{
-          text: '     >     ',
-          repeat: true,
-          offset: 6,
-          attributes: {
-            fill: 'white',
-            'font-size': '16px'
-          },
-          style: color
-            ? {
-                color: color,
-                opacity: 0.8,
-                weight: 5
-              }
-            : { weight: 5 }
-        }}
-      />
-      <TripMiddleMarker trip={path} />
-    </>
-  ) : null;
+function TripPath({ path, color, isLive }) {
+  if (path && path.length) {
+    const trip = isLive ? [] : path;
+    if (isLive) {
+      path.forEach(point => {
+        if (point.length === 2) {
+          trip.push(point);
+        } else {
+          trip.push([point[0], point[1]]);
+        }
+      });
+    }
+    return (
+      <>
+        <PolylineText
+          positions={trip}
+          weight={8}
+          textPathOptions={{
+            text: '     >     ',
+            repeat: true,
+            offset: 6,
+            attributes: {
+              fill: 'white',
+              'font-size': '16px'
+            },
+            style: color
+              ? {
+                  color: color,
+                  opacity: 0.8,
+                  weight: 5
+                }
+              : { weight: 5 }
+          }}
+        />
+        {!isLive ? <TripMiddleMarker trip={trip} /> : null}
+      </>
+    );
+  } else {
+    return null;
+  }
 }
