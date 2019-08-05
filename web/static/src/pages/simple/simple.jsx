@@ -6,20 +6,21 @@ import { CONF } from '../../../../config/config.js';
 import { TRIP_ONE } from '../../components/trip_path_20190713154335.js';
 import { TRIP_TWO } from '../../components/trip_path_20190714180533.js';
 import { TRIP_THREE } from '../../components/trip_path_20190729201805.js';
-
+import { TRIP_NEW } from '../../components/trip_path_new.js';
 import Map from '../../components/map.jsx';
 import { decode } from '../../utils/decode';
+import { transfer } from '../../utils/transfer';
 
-const TRIP = [TRIP_ONE, TRIP_TWO, TRIP_THREE];
+const TRIP = [TRIP_ONE, TRIP_TWO, TRIP_THREE, transfer(TRIP_NEW)];
 
 export default function Simulator() {
   const [startPoint, setStartPoint] = useState([0, 0]);
   const [endPoint, setEndPoint] = useState([0, 0]);
 
-  const [tripNum, setTripNum] = useState('0');
+  const [tripNum, setTripNum] = useState('3');
 
   const [optimizedTrip, setOptimizedTrip] = useState([]);
-  const [originalTrip, setOriginalTrip] = useState(transferTrip(0));
+  const [originalTrip, setOriginalTrip] = useState(transferTrip(3));
 
   useEffect(() => {
     setOptimizedTrip([]);
@@ -42,6 +43,7 @@ export default function Simulator() {
             <SelectOption key={'0'}>Trip 1</SelectOption>
             <SelectOption key={'1'}>Trip 2</SelectOption>
             <SelectOption key={'2'}>Trip 3</SelectOption>
+            <SelectOption key={'3'}>Trip New</SelectOption>
           </Select>
         </div>
         <div className="simple-map">
