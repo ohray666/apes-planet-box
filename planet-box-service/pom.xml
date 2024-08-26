@@ -24,7 +24,7 @@
         <jackson.version>2.9.6</jackson.version>
         <dropwizard.version>1.3.5</dropwizard.version>
         <fastjson.version>1.2.45</fastjson.version>
-        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
+        <springfox-swagger2.version>2.10.0</springfox-swagger2.version>
         <guava.version>23.0</guava.version>
     </properties>
 
